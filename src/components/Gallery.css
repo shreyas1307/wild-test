@@ -27,6 +27,11 @@
   outline: none;
 }
 
+.previousButton:hover,
+.nextButton:hover {
+  cursor: pointer;
+}
+
 .previousButton:disabled img,
 .nextButton:disabled img {
   opacity: 0.6;

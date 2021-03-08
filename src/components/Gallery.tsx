@@ -31,6 +31,7 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     const imageSize = document.querySelectorAll(".image-carousel-slide img");
     setSize(imageSize[0].clientWidth);
+
     setImageCarouselSlideStyle((prev) => ({
       ...prev,
       transform: `translateX(${-size * counter}px)`,
@@ -63,7 +64,7 @@ const Gallery: React.FC = () => {
       inertia: true,
       dragResistance: 0,
       edgeResistance: 1,
-      throwResistance: 1000,
+      throwResistance: 0,
       onDragStart: function () {
         setSnapping(false);
       },
