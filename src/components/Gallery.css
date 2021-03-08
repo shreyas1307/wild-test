@@ -1,0 +1,58 @@
+.image-carousel-container {
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+  position: relative !important;
+  /* border: 5px solid white; */
+}
+
+.image-carousel-slide {
+  display: flex;
+  width: 100%;
+  /* height: 500px; */
+}
+
+#button-wrapper {
+  position: absolute;
+  bottom: 7px;
+  right: 1px;
+}
+.previousButton,
+.nextButton {
+  width: 75px;
+  height: 90px;
+  background: white;
+  border: none;
+  margin-right: 1px;
+  outline: none;
+}
+
+.previousButton:disabled img,
+.nextButton:disabled img {
+  opacity: 0.6;
+}
+
+.previousButton img,
+.nextButton img {
+  height: 10px;
+}
+
+.previousButton > img {
+  transform: rotate(180deg);
+}
+
+.slidertracker {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+}
+
+.slidertracker .slide {
+  position: relative;
+  border-radius: 50%;
+  transition: ease-in-out 0.25s;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+}
