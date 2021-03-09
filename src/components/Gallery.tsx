@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  //  useReducer,
-  useRef,
-  useState,
-} from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { imageAPIData } from "../interfaces/imageAPI";
 import { imagesJSON } from "../images";
 import Slider from "./Slider/Slider";
@@ -14,12 +8,10 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 import "./Gallery.css";
 import SliderTracker from "./Slider/SliderTracker";
 import Button from "./Button/Button";
-// import { ImageSliderReducer, useReducerState } from "./useReducer";
 
 gsap.registerPlugin(Draggable, InertiaPlugin);
 
 const Gallery: React.FC = () => {
-  // const [state, dispatch] = useReducer(ImageSliderReducer, useReducerState)
   // State values for Counter, Size, Snap Array and Index for Drag and view Width
   const [counter, setCounter] = useState<number>(0);
   const [size, setSize] = useState<number>(0);
@@ -71,10 +63,11 @@ const Gallery: React.FC = () => {
     }));
   }, [counter, size]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let xImageSize: number = 0;
     let arr: number[] = [];
 
+    // Grabs the clientwidth for the image-slider div, and calculates the snap values to be saved for the drag feature
     requestAnimationFrame(() => {
       if (
         sliderRef.current.children[0].clientWidth > 0 &&
@@ -92,6 +85,8 @@ const Gallery: React.FC = () => {
       }
     });
 
+    // Creates a draggable instance of the image slider
+
     Draggable.create(sliderRef.current, {
       type: "x",
       inertia: true,
@@ -99,34 +94,24 @@ const Gallery: React.FC = () => {
       edgeResistance: 1,
       throwResistance: 0,
       onDragStart: function () {
-        console.log("Drag Start");
         setSnapping(false);
       },
       onDragEnd: function () {
-        console.log("Drag End");
         setSnapping(false);
-      },
-      onThrowComplete: () => {
-        console.log("Throw Complete", snapValue, counter);
       },
       snap: {
         left: function (endValue) {
           if (!snapping) {
             setSnapping(true);
             let lastEndValue = snapArray[snapValue];
-
-            if (
-              endValue < lastEndValue + 56 &&
-              snapValue < snapArray.length - 1
-            ) {
+            if (endValue < lastEndValue && snapValue < snapArray.length - 1) {
               snapValue++;
               setCounter((prev) => prev + 1);
-            } else if (endValue > lastEndValue - 56 && snapValue > 0) {
+            } else if (endValue > lastEndValue && snapValue > 0) {
               snapValue--;
               setCounter((prev) => prev - 1);
             }
           }
-          console.log(snapValue, "snapValue | Counter", counter);
           return snapArray[snapValue];
         },
       },
@@ -135,7 +120,7 @@ const Gallery: React.FC = () => {
       resistance: 1,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sliderRef.current, snapArray]);
+  }, [sliderRef.current, snapArray, snapValue]);
 
   // Handles Previous Button clicks
 
@@ -143,10 +128,10 @@ const Gallery: React.FC = () => {
     if (counter === 0) {
       return;
     } else {
-      snapValue--;
+      snapValue = snapValue - 1;
       setCounter(counter - 1);
       gsap.to(".image-carousel-slide", {
-        transform: `translateX${-size * snapValue}px`,
+        transform: `translateX${-size * counter}px`,
       });
     }
   };
@@ -156,10 +141,10 @@ const Gallery: React.FC = () => {
     if (counter === imagesJSON.length - 1) {
       return;
     } else {
+      snapValue = snapValue + 1;
       setCounter(counter + 1);
-      snapValue++;
       gsap.to(".image-carousel-slide", {
-        transform: `translateX${-size * snapValue}px`,
+        transform: `translateX${-size * counter}px`,
       });
     }
   };
