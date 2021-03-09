@@ -134,6 +134,7 @@ const Gallery: React.FC = () => {
       activeCursor: "grabbing",
       resistance: 1,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderRef.current, snapArray]);
 
   // Handles Previous Button clicks

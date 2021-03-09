@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React from "react";
 import { imageAPIData } from "../../interfaces/imageAPI";
 
 export interface ISliderProps {
