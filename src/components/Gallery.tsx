@@ -95,6 +95,7 @@ const Gallery: React.FC = () => {
       activeCursor: "grabbing",
       resistance: 1,
     });
+    // eslint-disable-next-line
   }, [sliderRef.current, snapArray]);
 
   const prevButtonHandler = () => {
