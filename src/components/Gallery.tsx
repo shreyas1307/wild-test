@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { imageAPIData } from "../interfaces/imageAPI";
 import { imagesJSON } from "../images";
 import Slider from "./Slider/Slider";
@@ -53,7 +53,7 @@ const Gallery: React.FC = () => {
   }
 
   // Synchronously sets Image Width Size and also creates new gsap Draggable instance
-  useLayoutEffect(() => {
+  useEffect(() => {
     const imageSize = document.querySelectorAll(".image-carousel-slide img");
     setSize(imageSize[0].clientWidth);
 
@@ -102,16 +102,41 @@ const Gallery: React.FC = () => {
       snap: {
         left: function (endValue) {
           if (!snapping) {
+            console.log(snapping);
             setSnapping(true);
             let lastEndValue = snapArray[snapValue];
+            console.log(endValue, lastEndValue, snapValue, "start", counter);
             if (endValue < lastEndValue && snapValue < snapArray.length - 1) {
+              console.log(
+                endValue,
+                lastEndValue,
+                snapValue,
+                "if block",
+                counter
+              );
               snapValue++;
               setCounter((prev) => prev + 1);
             } else if (endValue > lastEndValue && snapValue > 0) {
+              console.log(
+                endValue,
+                lastEndValue,
+                snapValue,
+                "else if block",
+                counter
+              );
               snapValue--;
               setCounter((prev) => prev - 1);
+            } else {
+              console.log(
+                endValue,
+                lastEndValue,
+                snapValue,
+                "else block",
+                counter
+              );
             }
           }
+          console.log(snapping);
           return snapArray[snapValue];
         },
       },
@@ -120,7 +145,7 @@ const Gallery: React.FC = () => {
       resistance: 1,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sliderRef.current, snapArray, snapValue]);
+  }, [sliderRef.current, snapArray]);
 
   // Handles Previous Button clicks
 
