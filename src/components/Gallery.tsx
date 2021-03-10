@@ -10,7 +10,7 @@ import SliderTracker from "./Slider/SliderTracker";
 import Button from "./Button/Button";
 
 gsap.registerPlugin(Draggable, InertiaPlugin);
-
+let snapValue: number = 0;
 const Gallery: React.FC = () => {
   // State values for Counter, Size, Snap Array and Index for Drag and view Width
   const [counter, setCounter] = useState<number>(0);
@@ -21,8 +21,6 @@ const Gallery: React.FC = () => {
 
   // Referencing the Image slider carousel
   const sliderRef = useRef<null | any>(null);
-
-  let snapValue: number = 0;
 
   // Storing style for the Image slider carousel
   const [imageCarouselSlideStyle, setImageCarouselSlideStyle] = useState<{
@@ -102,41 +100,17 @@ const Gallery: React.FC = () => {
       snap: {
         left: function (endValue) {
           if (!snapping) {
-            console.log(snapping);
             setSnapping(true);
             let lastEndValue = snapArray[snapValue];
-            console.log(endValue, lastEndValue, snapValue, "start", counter);
             if (endValue < lastEndValue && snapValue < snapArray.length - 1) {
-              console.log(
-                endValue,
-                lastEndValue,
-                snapValue,
-                "if block",
-                counter
-              );
               snapValue++;
               setCounter((prev) => prev + 1);
             } else if (endValue > lastEndValue && snapValue > 0) {
-              console.log(
-                endValue,
-                lastEndValue,
-                snapValue,
-                "else if block",
-                counter
-              );
               snapValue--;
               setCounter((prev) => prev - 1);
             } else {
-              console.log(
-                endValue,
-                lastEndValue,
-                snapValue,
-                "else block",
-                counter
-              );
             }
           }
-          console.log(snapping);
           return snapArray[snapValue];
         },
       },
@@ -156,7 +130,7 @@ const Gallery: React.FC = () => {
       snapValue = snapValue - 1;
       setCounter(counter - 1);
       gsap.to(".image-carousel-slide", {
-        transform: `translateX${-size * counter}px`,
+        transform: `translateX${-size * snapValue}px`,
       });
     }
   };
@@ -169,7 +143,7 @@ const Gallery: React.FC = () => {
       snapValue = snapValue + 1;
       setCounter(counter + 1);
       gsap.to(".image-carousel-slide", {
-        transform: `translateX${-size * counter}px`,
+        transform: `translateX${-size * snapValue}px`,
       });
     }
   };
@@ -193,11 +167,11 @@ const Gallery: React.FC = () => {
           })}
         </div>
         <Button
-          counter={counter}
+          counter={snapValue}
           prevButtonHandler={prevButtonHandler}
           nextButtonHandler={nextButtonHandler}
         />
-        <SliderTracker counter={counter} />
+        <SliderTracker counter={snapValue} />
       </div>
     </>
   );
